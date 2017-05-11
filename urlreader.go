@@ -1,3 +1,4 @@
+// The ulrreader package implements the io.Reader interface for HTTP resources.
 package urlreader
 
 import (
@@ -11,10 +12,14 @@ type Reader struct {
 	eof bool
 }
 
+// NewReader create a new instance of urlreader, passing in the url to be read. The returned urlreader can than be treated like any other io.Reader.
 func NewReader(url string) *Reader {
 	return &Reader{url, false}
 }
 
+// Read reads data into p and returns the number of bytes read into p. The entire resource is read at once, so len(p) will
+// be the length of the resource. After one read, the end of the resource will have been reached so any subsequent reads
+// will return a count of zero and an error of type io.EOF.
 func (r *Reader) Read(p []byte) (int, error) {
 	if r.eof == true {
 		return 0, io.EOF
